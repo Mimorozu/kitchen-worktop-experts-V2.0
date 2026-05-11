@@ -82,7 +82,7 @@ export default function QuoteForm() {
                 action: 'form_submitted',
                 label: answers.material,
             })
-            console.log('GA event fired', answers.material)
+    
 
             setStep(5)
 
