@@ -54,8 +54,6 @@ export default function QuoteForm() {
         const baseId = import.meta.env.VITE_AIRTABLE_BASE_ID
         const table = import.meta.env.VITE_AIRTABLE_TABLE
 
-        // temporary debug line
-        console.log('token:', token, 'baseId:', baseId, 'table:', table)
 
         try {
             await fetch(`https://api.airtable.com/v0/${baseId}/${table}`, {
