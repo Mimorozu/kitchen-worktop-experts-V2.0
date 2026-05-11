@@ -1,7 +1,7 @@
 // src/components/TrustBar.jsx
 
 const TRUST_ITEMS = [
-  { icon: '★', text: '4.9 rating on google reviews' },
+  { icon: '★', text: '4.9 Rating On Google Reviews' },
   { icon: '✓', text: 'Free No-Obligation Quote' },
   { icon: '⚡', text: 'Same Week Fitting Available' },
   { icon: '📍', text: 'Birmingham Based' },
