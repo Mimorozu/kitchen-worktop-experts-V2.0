@@ -1,5 +1,6 @@
 // src/components/QuoteForm.jsx
 import { useState } from 'react'
+import ReactGA from 'react-ga4'
 
 const MATERIALS = [
     { id: 'quartz', label: 'Quartz' },
@@ -74,6 +75,14 @@ export default function QuoteForm() {
                     }
                 })
             })
+
+            // google analytics
+            ReactGA.event({
+                category: 'Lead',
+                action: 'form_submitted',
+                label: answers.material,
+            })
+            console.log('GA event fired', answers.material)
 
             setStep(5)
 
