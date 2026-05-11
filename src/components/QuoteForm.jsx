@@ -1,4 +1,4 @@
-// src/components/QuoteForm.jsx ..
+// src/components/QuoteForm.jsx
 import { useState } from 'react'
 
 const MATERIALS = [
