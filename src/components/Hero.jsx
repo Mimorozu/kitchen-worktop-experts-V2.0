@@ -17,7 +17,7 @@ export default function Hero() {
 
       <p className="hero__sub">
         Quartz, granite & marble from trusted local specialists.
-        Free quotes in under 60 seconds.
+        Free quotes, hassle free
       </p>
 
       <button
@@ -28,7 +28,7 @@ export default function Hero() {
       </button>
 
       <p className="hero__proof">
-        ★★★★★ 127 five-star reviews · No obligation · No pushy sales
+        A decade of experience supplying quality worktops
       </p>
 
     </section>
