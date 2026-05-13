@@ -25,7 +25,7 @@ export default function Hero() {
       </div>
 
       <div className="hero__gallery">
-            <img src='public/gold-tap.jpg' className="hero__gallery-img"/>
+            <img src='/gold-tap.jpg' className="hero__gallery-img"/>
       </div>
 
     </section>
