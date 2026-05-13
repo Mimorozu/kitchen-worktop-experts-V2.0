@@ -33,13 +33,23 @@ body {
 /* ── Hero ────────────────────────────────────── */
 .hero {
   min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 60px;
+  padding: 140px 80px 80px;
+  border-bottom: 1px solid var(--color-border);
+  max-width: 75vw;
+  margin: 0 auto;
+}
+
+.hero__content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 140px 24px;
-  border-bottom: 1px solid var(--color-border);
+  align-items: flex-start;
+  text-align: left;
+  justify-content: space-between;
+  height: 50%;
 }
 
 .hero__eyebrow {
@@ -53,11 +63,11 @@ body {
 
 .hero__headline {
   font-family: var(--font-display);
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   line-height: 1.1;
   color: var(--color-text);
   margin-bottom: 20px;
-  max-width: 14ch;
+  max-width: 18ch;
 }
 
 .hero__sub {
@@ -69,7 +79,6 @@ body {
 }
 
 .hero__cta {
-  width: 100%;
   background: var(--color-primary);
   color: #0a0a0a;
   border: none;
@@ -79,39 +88,33 @@ body {
   font-weight: 600;
   cursor: pointer;
   letter-spacing: 0.05em;
-  margin-bottom: 20px;
   transition: opacity 0.2s ease;
+  width: auto;
 }
 
 .hero__cta:hover {
   opacity: 0.85;
 }
 
-.hero__proof {
-  font-size: 0.8rem;
-  color: var(--color-muted);
-  letter-spacing: 0.03em;
+.hero__gallery{
+  position: relative;
+  display: inline-block;
 }
 
-/* ── Hero — tablet and up ─────────────────────── */
-@media (min-width: 768px) {
-  .hero__headline {
-    font-size: 3.5rem;
-  }
-
-  .hero__cta {
-    width: auto;
-  }
+.hero__gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
+
+
 
 /* ── Hero — desktop ───────────────────────────── */
 @media (min-width: 1024px) {
   .hero__headline {
-    font-size: 5rem;
-  }
+    font-size: 3.5rem;
 
-  .hero__sub {
-    font-size: 1.1rem;
   }
 }
 
