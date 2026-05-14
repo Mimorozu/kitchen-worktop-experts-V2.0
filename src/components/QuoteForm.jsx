@@ -16,21 +16,21 @@ const QUARTZ_STYLES = [
         label: 'Marble Effect',
         description: 'Soft veining, elegant look',
         src: '/marble-effect.png',
-        position: 'center 55%',  // adjust until it looks right
+        position: 'center 55%',
     },
     {
         id: 'subtle-pattern',
         label: 'Subtle Pattern',
         description: 'Delicate texture, versatile',
         src: '/subtle-pattern.png',
-        position: 'center 30%',  // pulls image up
+        position: 'center 30%',
     },
     {
         id: 'minimalist',
         label: 'Minimalist',
         description: 'Clean, solid, modern',
         src: '/minimalist.png',
-        position: 'center bottom',  // shows bottom of image
+        position: 'center bottom',
     },
 ]
 
@@ -69,6 +69,16 @@ const TIMELINES = [
     { id: 'planning', label: 'Just Planning Ahead' },
 ]
 
+// Maps each step number to a readable name for GA4
+const STEP_NAMES = {
+    1: 'material',
+    2: 'size',
+    3: 'photo',
+    4: 'budget',
+    5: 'timeline',
+    6: 'contact',
+}
+
 export default function QuoteForm() {
     const [step, setStep] = useState(1)
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -88,8 +98,28 @@ export default function QuoteForm() {
         postcode: '',
     })
 
+    // Fires a step-level GA4 event so we can see drop-off in the funnel
+    function trackStep(stepNumber, stepName) {
+        ReactGA.event({
+            category: 'Lead',
+            action: 'form_step',
+            label: stepName,
+            value: stepNumber,
+        })
+    }
+
     function handleAnswer(field, value) {
+        // Fire form_started the very first time a user selects a material —
+        // this tells us how many people engaged with the form vs just scrolled past
+        if (field === 'material' && !answers.material) {
+            ReactGA.event({
+                category: 'Lead',
+                action: 'form_started',
+            })
+        }
+
         setAnswers({ ...answers, [field]: value })
+
         if (field === 'material' && value === 'quartz') {
             setShowQuartzStyles(true)
         }
@@ -100,6 +130,8 @@ export default function QuoteForm() {
     }
 
     function nextStep() {
+        // Track which step the user just completed before advancing
+        trackStep(step, STEP_NAMES[step])
         setStep(step + 1)
     }
 
@@ -137,10 +169,8 @@ export default function QuoteForm() {
         }
     }
 
-
-
     async function handleSubmit() {
-        if (isUploading) return  // don't submit if still uploading
+        if (isUploading) return
         setIsSubmitting(true)
 
         const token = import.meta.env.VITE_AIRTABLE_TOKEN
@@ -170,6 +200,9 @@ export default function QuoteForm() {
                 })
             })
 
+            // This fires only after Airtable confirms success —
+            // so a gap between form_step:contact and form_submitted
+            // means the submission itself is failing
             ReactGA.event({
                 category: 'Lead',
                 action: 'form_submitted',
@@ -244,7 +277,7 @@ export default function QuoteForm() {
                                                 src={s.src}
                                                 alt={s.label}
                                                 className="form__size-img"
-                                                style={{ objectPosition: s.position }}  // CSS tricks
+                                                style={{ objectPosition: s.position }}
                                             />
                                             <span className="form__size-label">{s.label}</span>
                                             <span className="form__size-desc">{s.description}</span>
