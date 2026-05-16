@@ -55,47 +55,25 @@ const SIZES = [
     },
 ]
 
-const BUDGETS = [
-    { id: '2to3k', label: '£2,000 – £3,000' },
-    { id: '3to6k', label: '£3,000 – £6,000' },
-    { id: '6to10k', label: '£6,000 – £10,000' },
-    { id: '10kplus', label: '£10,000+' },
-]
-
-const TIMELINES = [
-    { id: 'asap', label: 'As Soon As Possible' },
-    { id: '1month', label: 'Within a Month' },
-    { id: '3months', label: 'Within 3 Months' },
-    { id: 'planning', label: 'Just Planning Ahead' },
-]
-
 // Maps each step number to a readable name for GA4
 const STEP_NAMES = {
     1: 'material',
-    2: 'size',
-    3: 'photo',
-    4: 'budget',
-    5: 'timeline',
-    6: 'contact',
+    2: 'postcode',
+    3: 'size',
+    4: 'contact',
 }
 
 export default function QuoteForm() {
     const [step, setStep] = useState(1)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [showQuartzStyles, setShowQuartzStyles] = useState(false)
-    const [uploadedFile, setUploadedFile] = useState(null)
-    const [uploadedUrl, setUploadedUrl] = useState('')
-    const [isUploading, setIsUploading] = useState(false)
     const [answers, setAnswers] = useState({
         material: '',
         quartzStyle: '',
+        postcode: '',
         size: '',
-        budget: '',
-        timeline: '',
         name: '',
         email: '',
-        phone: '',
-        postcode: '',
     })
 
     // Fires a step-level GA4 event so we can see drop-off in the funnel
@@ -135,42 +113,19 @@ export default function QuoteForm() {
         setStep(step + 1)
     }
 
+    function selectOption(field, value) {
+        handleAnswer(field, value)
+        if (!window.matchMedia('(pointer: coarse)').matches) return
+        // Quartz shows a sub-step instead of advancing
+        if (field === 'material' && value === 'quartz') return
+        setTimeout(nextStep, 300)
+    }
+
     function prevStep() {
         setStep(step - 1)
     }
 
-    async function handleFileUpload(e) {
-        const file = e.target.files[0]
-        if (!file) return
-
-        setIsUploading(true)
-        setUploadedFile(file)
-
-        const formData = new FormData()
-        formData.append('file', file)
-        formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET)
-
-        try {
-            const response = await fetch(
-                `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/auto/upload`,
-                {
-                    method: 'POST',
-                    body: formData,
-                }
-            )
-            const data = await response.json()
-            setUploadedUrl(data.secure_url)
-
-        } catch (error) {
-            console.error('Upload failed:', error)
-            alert('File upload failed. Please try again.')
-        } finally {
-            setIsUploading(false)
-        }
-    }
-
     async function handleSubmit() {
-        if (isUploading) return
         setIsSubmitting(true)
 
         const token = import.meta.env.VITE_AIRTABLE_TOKEN
@@ -188,14 +143,10 @@ export default function QuoteForm() {
                     fields: {
                         Name: answers.name,
                         Email: answers.email,
-                        Phone: answers.phone,
                         Postcode: answers.postcode,
                         Material: answers.material,
                         Quartzstyle: answers.quartzStyle,
                         Size: answers.size,
-                        Budget: answers.budget,
-                        Timeline: answers.timeline,
-                        Photo: uploadedUrl || '',
                     }
                 })
             })
@@ -209,7 +160,7 @@ export default function QuoteForm() {
                 label: answers.material,
             })
 
-            setStep(7)
+            setStep(5)
 
         } catch (error) {
             console.error('Submission failed:', error)
@@ -226,7 +177,7 @@ export default function QuoteForm() {
                 <div className="form__header">
                     <p className="section__eyebrow">Free Quote</p>
                     <h2 className="section__heading">Get Your Free<br />Worktop Quote</h2>
-                    <p className="form__step-indicator">Step {step} of 6</p>
+                    {step < 5 &&<p className="form__step-indicator">Step {step} of 4</p>}
                 </div>
 
                 {step === 1 && (
@@ -244,7 +195,7 @@ export default function QuoteForm() {
                                         <button
                                             key={m.id}
                                             className={`form__option ${answers.material === m.id ? 'form__option--selected' : ''}`}
-                                            onClick={() => handleAnswer('material', m.id)}
+                                            onClick={() => selectOption('material', m.id)}
                                         >
                                             {m.label}
                                         </button>
@@ -271,7 +222,7 @@ export default function QuoteForm() {
                                         <button
                                             key={s.id}
                                             className={`form__size-option ${answers.quartzStyle === s.id ? 'form__size-option--selected' : ''}`}
-                                            onClick={() => handleAnswer('quartzStyle', s.id)}
+                                            onClick={() => selectOption('quartzStyle', s.id)}
                                         >
                                             <img
                                                 src={s.src}
@@ -306,13 +257,35 @@ export default function QuoteForm() {
 
                 {step === 2 && (
                     <div className="form__step">
+                        <h3 className="form__question">What is your postcode?</h3>
+                        <p className="form__note">
+                            We use this to match you with a local specialist.
+                        </p>
+                        <div className="form__fields">
+                            <input
+                                className="form__input"
+                                type="text"
+                                placeholder="Postcode"
+                                value={answers.postcode}
+                                onChange={(e) => handleAnswer('postcode', e.target.value)}
+                            />
+                        </div>
+                        <div className="form__nav">
+                            <button className="form__back" onClick={prevStep}>← Back</button>
+                            <button className="form__next" onClick={nextStep} disabled={!answers.postcode}>Next →</button>
+                        </div>
+                    </div>
+                )}
+
+                {step === 3 && (
+                    <div className="form__step">
                         <h3 className="form__question">What size is your kitchen?</h3>
                         <div className="form__sizes">
                             {SIZES.map((s) => (
                                 <button
                                     key={s.id}
                                     className={`form__size-option ${answers.size === s.id ? 'form__size-option--selected' : ''}`}
-                                    onClick={() => handleAnswer('size', s.id)}
+                                    onClick={() => selectOption('size', s.id)}
                                 >
                                     <img
                                         src={s.src}
@@ -331,101 +304,7 @@ export default function QuoteForm() {
                     </div>
                 )}
 
-                {step === 3 && (
-                    <div className="form__step">
-                        <h3 className="form__question">
-                            Got a photo or plan of your kitchen?
-                        </h3>
-                        <p className="form__note">
-                            This helps us prepare a more accurate quote.
-                            If you don't have one, you can skip this step.
-                        </p>
-                        <div className="form__upload">
-                            <label className="form__upload-label" htmlFor="file-upload">
-                                {uploadedFile ? (
-                                    <div className="form__upload-success">
-                                        <span className="form__upload-icon">✓</span>
-                                        <span className="form__upload-filename">{uploadedFile.name}</span>
-                                        {isUploading && <span className="form__upload-status">Uploading...</span>}
-                                        {uploadedUrl && <span className="form__upload-status">Uploaded ✓</span>}
-                                    </div>
-                                ) : (
-                                    <div className="form__upload-placeholder">
-                                        <span className="form__upload-icon">↑</span>
-                                        <span className="form__upload-text">Click to upload a photo or PDF</span>
-                                        <span className="form__upload-hint">JPG, PNG, WEBP or PDF · Max 10MB</span>
-                                    </div>
-                                )}
-                            </label>
-                            <input
-                                id="file-upload"
-                                type="file"
-                                accept="image/jpeg,image/png,image/webp,application/pdf"
-                                onChange={handleFileUpload}
-                                className="form__upload-input"
-                            />
-                        </div>
-                        <div className="form__nav">
-                            <button className="form__back" onClick={prevStep}>← Back</button>
-                            <div className="form__nav-right">
-                                <button className="form__skip" onClick={nextStep}>
-                                    Skip →
-                                </button>
-                                <button
-                                    className="form__next"
-                                    onClick={nextStep}
-                                    disabled={isUploading}
-                                >
-                                    {isUploading ? 'Uploading...' : 'Next →'}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
                 {step === 4 && (
-                    <div className="form__step">
-                        <h3 className="form__question">What is your budget?</h3>
-                        <div className="form__options">
-                            {BUDGETS.map((b) => (
-                                <button
-                                    key={b.id}
-                                    className={`form__option ${answers.budget === b.id ? 'form__option--selected' : ''}`}
-                                    onClick={() => handleAnswer('budget', b.id)}
-                                >
-                                    {b.label}
-                                </button>
-                            ))}
-                        </div>
-                        <div className="form__nav">
-                            <button className="form__back" onClick={prevStep}>← Back</button>
-                            <button className="form__next" onClick={nextStep} disabled={!answers.budget}>Next →</button>
-                        </div>
-                    </div>
-                )}
-
-                {step === 5 && (
-                    <div className="form__step">
-                        <h3 className="form__question">When do you need it fitted?</h3>
-                        <div className="form__options">
-                            {TIMELINES.map((t) => (
-                                <button
-                                    key={t.id}
-                                    className={`form__option ${answers.timeline === t.id ? 'form__option--selected' : ''}`}
-                                    onClick={() => handleAnswer('timeline', t.id)}
-                                >
-                                    {t.label}
-                                </button>
-                            ))}
-                        </div>
-                        <div className="form__nav">
-                            <button className="form__back" onClick={prevStep}>← Back</button>
-                            <button className="form__next" onClick={nextStep} disabled={!answers.timeline}>Next →</button>
-                        </div>
-                    </div>
-                )}
-
-                {step === 6 && (
                     <div className="form__step">
                         <h3 className="form__question">Almost done — where shall we send your quote?</h3>
                         <p className="form__note">
@@ -446,27 +325,13 @@ export default function QuoteForm() {
                                 value={answers.email}
                                 onChange={(e) => handleAnswer('email', e.target.value)}
                             />
-                            <input
-                                className="form__input"
-                                type="tel"
-                                placeholder="Phone Number"
-                                value={answers.phone}
-                                onChange={(e) => handleAnswer('phone', e.target.value)}
-                            />
-                            <input
-                                className="form__input"
-                                type="text"
-                                placeholder="Postcode"
-                                value={answers.postcode}
-                                onChange={(e) => handleAnswer('postcode', e.target.value)}
-                            />
                         </div>
                         <div className="form__nav">
                             <button className="form__back" onClick={prevStep}>← Back</button>
                             <button
                                 className="form__next"
                                 onClick={handleSubmit}
-                                disabled={!answers.name || !answers.email || !answers.phone || !answers.postcode || isSubmitting}
+                                disabled={!answers.name || !answers.email || isSubmitting}
                             >
                                 {isSubmitting ? 'Sending...' : 'Get My Free Quote →'}
                             </button>
@@ -474,7 +339,7 @@ export default function QuoteForm() {
                     </div>
                 )}
 
-                {step === 7 && (
+                {step === 5 && (
                     <div className="form__success">
                         <p className="form__success-icon">✓</p>
                         <h3 className="form__success-title">Quote Request Received</h3>
