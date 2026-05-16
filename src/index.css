@@ -492,6 +492,10 @@ body {
     object-fit: cover;
     object-position: center;
   }
+
+  .form__next--auto-advance {
+    display: none;
+  }
 }
 
 /* ── File Upload ─────────────────────────────── */

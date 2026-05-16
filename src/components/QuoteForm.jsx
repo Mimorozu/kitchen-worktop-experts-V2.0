@@ -202,7 +202,7 @@ export default function QuoteForm() {
                                     ))}
                                 </div>
                                 <button
-                                    className="form__next"
+                                    className="form__next form__next--auto-advance"
                                     onClick={nextStep}
                                     disabled={!answers.material}
                                 >
@@ -243,7 +243,7 @@ export default function QuoteForm() {
                                         ← Back
                                     </button>
                                     <button
-                                        className="form__next"
+                                        className="form__next form__next--auto-advance"
                                         onClick={nextStep}
                                         disabled={!answers.quartzStyle}
                                     >
@@ -266,6 +266,7 @@ export default function QuoteForm() {
                                 className="form__input"
                                 type="text"
                                 placeholder="Postcode"
+                                autoComplete="postal-code"
                                 value={answers.postcode}
                                 onChange={(e) => handleAnswer('postcode', e.target.value)}
                             />
@@ -299,7 +300,7 @@ export default function QuoteForm() {
                         </div>
                         <div className="form__nav">
                             <button className="form__back" onClick={prevStep}>← Back</button>
-                            <button className="form__next" onClick={nextStep} disabled={!answers.size}>Next →</button>
+                            <button className="form__next form__next--auto-advance" onClick={nextStep} disabled={!answers.size}>Next →</button>
                         </div>
                     </div>
                 )}
@@ -315,6 +316,7 @@ export default function QuoteForm() {
                                 className="form__input"
                                 type="text"
                                 placeholder="Full Name"
+                                autoComplete="name"
                                 value={answers.name}
                                 onChange={(e) => handleAnswer('name', e.target.value)}
                             />
@@ -322,6 +324,7 @@ export default function QuoteForm() {
                                 className="form__input"
                                 type="email"
                                 placeholder="Email Address"
+                                autoComplete="email"
                                 value={answers.email}
                                 onChange={(e) => handleAnswer('email', e.target.value)}
                             />
