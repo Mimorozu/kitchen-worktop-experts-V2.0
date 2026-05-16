@@ -10,7 +10,7 @@ export default function Hero() {
           Serving Birmingham & the West Midlands
         </p>
         <h1 className="hero__headline">
-          Get Your Kitchen Worktop Fitted. Fast.
+          Get Your Kitchen Worktops Fitted. Fast.
         </h1>
         <p className="hero__sub">
           Quartz, granite & marble from trusted local specialists.
