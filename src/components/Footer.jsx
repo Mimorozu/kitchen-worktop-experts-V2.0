@@ -1,6 +1,22 @@
 // src/components/Footer.jsx
+import { useNavigate, useLocation } from 'react-router-dom'
 
 export default function Footer() {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  function scrollToQuote() {
+    const el = document.getElementById('quote')
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      navigate('/')
+      setTimeout(() => {
+        document.getElementById('quote')?.scrollIntoView({ behavior: 'smooth' })
+      }, 150)
+    }
+  }
+
   return (
     <footer className="footer">
 
@@ -15,10 +31,7 @@ export default function Footer() {
 
         <div className="footer__cta">
           <p className="footer__cta-text">Ready to transform your kitchen?</p>
-          <button
-            className="footer__button"
-            onClick={() => document.getElementById('quote').scrollIntoView({ behavior: 'smooth' })}
-          >
+          <button className="footer__button" onClick={scrollToQuote}>
             Get My Free Quote →
           </button>
         </div>

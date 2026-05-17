@@ -1,20 +1,18 @@
-import Hero from './components/Hero'
-import TrustBar from './components/TrustBar'
-import HowItWorks from './components/HowItWorks'
-import QuoteForm from './components/QuoteForm'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
-            import Footer from './components/Footer'
-
+import Footer from './components/Footer'
+import Home from './pages/Home'
+import GalleryPage from './pages/GalleryPage'
 
 export default function App() {
     return (
-        <div>
+        <BrowserRouter>
             <Navbar />
-            <Hero />
-            <TrustBar />
-            <HowItWorks />
-            <QuoteForm />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/gallery" element={<GalleryPage />} />
+            </Routes>
             <Footer />
-        </div>
+        </BrowserRouter>
     )
 }
