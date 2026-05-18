@@ -1,7 +1,8 @@
 // src/components/QuoteForm.jsx
 import { useState } from 'react'
-import ReactGA from 'react-ga4'
+import ReactGA from 'react-ga4' // google analytics
 
+// an array to store material types for form
 const MATERIALS = [
     { id: 'quartz', label: 'Quartz' },
     { id: 'granite', label: 'Granite' },
@@ -10,6 +11,7 @@ const MATERIALS = [
     { id: 'unsure', label: 'Not Sure Yet' },
 ]
 
+// an array to store styles for form
 const QUARTZ_STYLES = [
     {
         id: 'marble-effect',
@@ -34,6 +36,7 @@ const QUARTZ_STYLES = [
     },
 ]
 
+// an array for the form
 const SIZES = [
     {
         id: 'small',
@@ -64,9 +67,13 @@ const STEP_NAMES = {
 }
 
 export default function QuoteForm() {
-    const [step, setStep] = useState(1)
+// tracks the users steps throughout form
+    const [step, setStep] = useState(1) 
+// tracks whether the for is mid-submittion so we can disable the submit and render
     const [isSubmitting, setIsSubmitting] = useState(false)
+// tracks is we need the quartz sub-step
     const [showQuartzStyles, setShowQuartzStyles] = useState(false)
+// object to catch user inputs while filling out form
     const [answers, setAnswers] = useState({
         material: '',
         quartzStyle: '',
@@ -76,7 +83,7 @@ export default function QuoteForm() {
         email: '',
     })
 
-    // Fires a step-level GA4 event so we can see drop-off in the funnel
+    // Fires a step-level GA4 event so we can see drop-off in the GA funnel
     function trackStep(stepNumber, stepName) {
         ReactGA.event({
             category: 'Lead',
@@ -86,9 +93,10 @@ export default function QuoteForm() {
         })
     }
 
+    // handling users answers
     function handleAnswer(field, value) {
-        // Fire form_started the very first time a user selects a material —
-        // this tells us how many people engaged with the form vs just scrolled past
+        
+        // GA4 fire for the start of a form
         if (field === 'material' && !answers.material) {
             ReactGA.event({
                 category: 'Lead',
@@ -96,17 +104,21 @@ export default function QuoteForm() {
             })
         }
 
+        // Spread operator to update usestate with user input using [field] as a key
         setAnswers({ ...answers, [field]: value })
 
+        // subquestion is user picks quartz for a material 
         if (field === 'material' && value === 'quartz') {
             setShowQuartzStyles(true)
         }
+        // if not, hide sub-step and clear any data
         if (field === 'material' && value !== 'quartz') {
             setShowQuartzStyles(false)
             setAnswers(prev => ({ ...prev, quartzStyle: '', material: value }))
         }
     }
 
+    // a function for tracking the steps 
     function nextStep() {
         // Track which step the user just completed before advancing
         trackStep(step, STEP_NAMES[step])
