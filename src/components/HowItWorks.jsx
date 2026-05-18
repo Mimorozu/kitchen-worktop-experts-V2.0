@@ -4,17 +4,17 @@ const STEPS = [
   {
     number: '01',
     title: 'Tell Us What You Need',
-    description: 'Fill in our 60-second quote form. Material, size, budget and postcode — that\'s all we need.',
+    description: 'Fill in our 60-second quote form. Postcode, Material and size — that\'s all we need.',
   },
   {
     number: '02',
     title: 'We Match You Instantly',
-    description: 'We connect you with the best local specialist for your area and budget. No middlemen, no markup.',
+    description: 'We can provide you with an estimate based on the information you give us.',
   },
   {
     number: '03',
     title: 'Get Your Worktop Fitted',
-    description: 'Your specialist contacts you within the hour to arrange a site visit. Most installs happen within the week.',
+    description: 'Your specialist emails you to confrim your design and arrange a template and fit. It\'s that easy.'
   },
 ]
 
