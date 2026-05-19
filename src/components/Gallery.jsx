@@ -6,36 +6,36 @@ const COLOURS = [
         id: 'bqs-capri',
         name: 'BQS Capri',
         description: '',
-        slab_image: '/capri-full-slab.png',
-        kitchen_image: '/capri-kitchen.png',
+        slab_image: '/capri-slab.webp',
+        kitchen_image: '/capri-kitchen.webp',
     },
     {
         id: 'bqs-bianco-fontana',
         name: 'BQS Bianco Fontana',
         description: '',
-        slab_image: '/fontana-full-slab.png',
-        kitchen_image: '/fontana-kitchen.png',
+        slab_image: '/biancofontana-slab.webp',
+        kitchen_image: '/biancofontana-kitchen.webp',
     },
     {
         id: 'bqs-grey-suede',
         name: 'BQS Grey Suede',
         description: '',
-        slab_image: '/grey-suede-slab.png',
-        kitchen_image: '/grey-suede-kitchen.png',
+        slab_image: '/greysuede-slab.webp',
+        kitchen_image: '/greysuede-kitchen.webp',
     },
     {
         id: 'bqs-crema-fiore',
         name: 'BQS Crema Fiore',
         description: '',
-        slab_image: '/crema-fiore-slab.png',
-        kitchen_image: '/crema-fiore-kitchen.png',
+        slab_image: '/crema-fiore-slab.webp',
+        kitchen_image: '/crema-fiore-kitchen.webp',
     },
     {
         id: 'cosmic-black',
         name: 'Cosmic Black',
         description: '',
-        slab_image: '/cosmiy.png',
-        kitchen_image: '/cosmiy-kitchen.png',
+        slab_image: '/cosmic slab.webp',
+        kitchen_image: '/cosmic kitchen.webp',
     },
 ]
 
@@ -65,6 +65,7 @@ export default function Gallery() {
                             <img
                                 src={colour.slab_image}
                                 alt={colour.name}
+                                loading="lazy"
                                 onClick={() => setActiveImage(colour.slab_image)}
                             />
                         </div>
@@ -72,6 +73,7 @@ export default function Gallery() {
                             <img
                                 src={colour.kitchen_image}
                                 alt={`${colour.name} in kitchen`}
+                                loading="lazy"
                                 onClick={() => setActiveImage(colour.kitchen_image)}
                             />
                         </div>

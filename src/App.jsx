@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import GalleryPage from './pages/GalleryPage'
+import StickyQuoteCTA from './components/StickyQuoteCTA'
 
 export default function App() {
     return (
@@ -13,6 +14,7 @@ export default function App() {
                 <Route path="/gallery" element={<GalleryPage />} />
             </Routes>
             <Footer />
+            <StickyQuoteCTA />
         </BrowserRouter>
     )
 }

@@ -7,25 +7,29 @@ export default function Hero() {
 
       <div className="hero__content">
         <p className="hero__eyebrow">
-          Serving Birmingham & the West Midlands
+        Birmingham's Worktop Specialists
         </p>
         <h1 className="hero__headline">
-          Get Your Kitchen Worktops Fitted. Fast.
+          Tired Of Your Old Worktops? We'll Fix That.
         </h1>
         <p className="hero__sub">
-          Quartz, granite & marble from trusted local specialists.
-          Free quotes in under 60 seconds.
+          Quartz, granite & marble from trusted suppliers
         </p>
+        <p className="hero__sub">
+          From £2,700 - Supply & fit included
+        </p>
+        {/* call to action button + scroll to element by ID */}
         <button
           className="hero__cta"
           onClick={() => document.getElementById('quote').scrollIntoView({ behavior: 'smooth' })}
         >
           Get My Free Quote →
         </button>
+        <p className="hero__reassurance">Free · No obligation · Takes 60 seconds</p>
       </div>
 
       <div className="hero__gallery">
-            <img src='/gold-tap.jpg' className="hero__gallery-img"/>
+        <img src='/hero-img.webp' className="hero__gallery-img" fetchpriority="high" alt="Kitchen worktop" />
       </div>
 
     </section>

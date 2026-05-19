@@ -1,89 +1,40 @@
 // src/components/QuoteForm.jsx
 import { useState } from 'react'
-import ReactGA from 'react-ga4' // google analytics
+import ReactGA from 'react-ga4'
 
-// an array to store material types for form
 const MATERIALS = [
-    { id: 'quartz', label: 'Quartz' },
-    { id: 'granite', label: 'Granite' },
-    { id: 'marble', label: 'Marble' },
-    { id: 'porcelain', label: 'Porcelain' },
-    { id: 'unsure', label: 'Not Sure Yet' },
+    { id: 'quartz',     label: 'Quartz' },
+    { id: 'granite',    label: 'Granite' },
+    { id: 'marble',     label: 'Marble' },
+    { id: 'porcelain',  label: 'Porcelain' },
+    { id: 'unsure',     label: 'Not Sure Yet' },
 ]
 
-// an array to store styles for form
-const QUARTZ_STYLES = [
-    {
-        id: 'marble-effect',
-        label: 'Marble Effect',
-        description: 'Soft veining, elegant look',
-        src: '/marble-effect.png',
-        position: 'center 55%',
-    },
-    {
-        id: 'subtle-pattern',
-        label: 'Subtle Pattern',
-        description: 'Delicate texture, versatile',
-        src: '/subtle-pattern.png',
-        position: 'center 30%',
-    },
-    {
-        id: 'minimalist',
-        label: 'Minimalist',
-        description: 'Clean, solid, modern',
-        src: '/minimalist.png',
-        position: 'center bottom',
-    },
-]
-
-// an array for the form
 const SIZES = [
-    {
-        id: 'small',
-        label: 'Small',
-        description: 'Worktop runs, only',
-        src: '/kitchen-small.png',
-    },
-    {
-        id: 'medium',
-        label: 'Medium',
-        description: 'Small island and worktops',
-        src: '/medium-kitchen.jpg',
-    },
-    {
-        id: 'large',
-        label: 'Large',
-        description: 'Large Island and worktops',
-        src: '/kitchen-large.jpg',
-    },
+    { id: 'small',  label: 'Small',  description: 'Worktop runs only',        src: '/kitchen-small.webp' },
+    { id: 'medium', label: 'Medium', description: 'Small island and worktops', src: '/medium-kitchen.webp' },
+    { id: 'large',  label: 'Large',  description: 'Large island and worktops', src: '/kitchen-large.webp' },
 ]
 
-// Maps each step number to a readable name for GA4
+// Step order: material → size → postcode → contact
 const STEP_NAMES = {
     1: 'material',
-    2: 'postcode',
-    3: 'size',
+    2: 'size',
+    3: 'postcode',
     4: 'contact',
 }
 
 export default function QuoteForm() {
-// tracks the users steps throughout form
-    const [step, setStep] = useState(1) 
-// tracks whether the for is mid-submittion so we can disable the submit and render
+    const [step, setStep] = useState(1)
     const [isSubmitting, setIsSubmitting] = useState(false)
-// tracks is we need the quartz sub-step
-    const [showQuartzStyles, setShowQuartzStyles] = useState(false)
-// object to catch user inputs while filling out form
     const [answers, setAnswers] = useState({
         material: '',
-        quartzStyle: '',
-        postcode: '',
         size: '',
+        postcode: '',
         name: '',
         email: '',
     })
 
-    // Fires a step-level GA4 event so we can see drop-off in the GA funnel
     function trackStep(stepNumber, stepName) {
         ReactGA.event({
             category: 'Lead',
@@ -93,56 +44,34 @@ export default function QuoteForm() {
         })
     }
 
-    // handling users answers
     function handleAnswer(field, value) {
-        
-        // GA4 fire for the start of a form
         if (field === 'material' && !answers.material) {
-            ReactGA.event({
-                category: 'Lead',
-                action: 'form_started',
-            })
+            ReactGA.event({ category: 'Lead', action: 'form_started' })
         }
-
-        // Spread operator to update usestate with user input using [field] as a key
-        setAnswers({ ...answers, [field]: value })
-
-        // subquestion is user picks quartz for a material 
-        if (field === 'material' && value === 'quartz') {
-            setShowQuartzStyles(true)
-        }
-        // if not, hide sub-step and clear any data
-        if (field === 'material' && value !== 'quartz') {
-            setShowQuartzStyles(false)
-            setAnswers(prev => ({ ...prev, quartzStyle: '', material: value }))
-        }
+        setAnswers(prev => ({ ...prev, [field]: value }))
     }
 
-    // a function for tracking the steps 
     function nextStep() {
-        // Track which step the user just completed before advancing
         trackStep(step, STEP_NAMES[step])
-        setStep(step + 1)
+        setStep(s => s + 1)
+    }
+
+    function prevStep() {
+        setStep(s => s - 1)
     }
 
     function selectOption(field, value) {
         handleAnswer(field, value)
         if (!window.matchMedia('(pointer: coarse)').matches) return
-        // Quartz shows a sub-step instead of advancing
-        if (field === 'material' && value === 'quartz') return
         setTimeout(nextStep, 300)
-    }
-
-    function prevStep() {
-        setStep(step - 1)
     }
 
     async function handleSubmit() {
         setIsSubmitting(true)
 
-        const token = import.meta.env.VITE_AIRTABLE_TOKEN
+        const token  = import.meta.env.VITE_AIRTABLE_TOKEN
         const baseId = import.meta.env.VITE_AIRTABLE_BASE_ID
-        const table = import.meta.env.VITE_AIRTABLE_TABLE
+        const table  = import.meta.env.VITE_AIRTABLE_TABLE
 
         try {
             await fetch(`https://api.airtable.com/v0/${baseId}/${table}`, {
@@ -153,19 +82,15 @@ export default function QuoteForm() {
                 },
                 body: JSON.stringify({
                     fields: {
-                        Name: answers.name,
-                        Email: answers.email,
+                        Name:     answers.name,
+                        Email:    answers.email,
                         Postcode: answers.postcode,
                         Material: answers.material,
-                        Quartzstyle: answers.quartzStyle,
-                        Size: answers.size,
+                        Size:     answers.size,
                     }
                 })
             })
 
-            // This fires only after Airtable confirms success —
-            // so a gap between form_step:contact and form_submitted
-            // means the submission itself is failing
             ReactGA.event({
                 category: 'Lead',
                 action: 'form_submitted',
@@ -189,90 +114,66 @@ export default function QuoteForm() {
                 <div className="form__header">
                     <p className="section__eyebrow">Free Quote</p>
                     <h2 className="section__heading">Get Your Free<br />Worktop Quote</h2>
-                    {step < 5 &&<p className="form__step-indicator">Step {step} of 4</p>}
+                    <div className="form__social-proof">
+                        <span className="form__stars">★★★★★</span>
+                        <span>Trusted by 120+ Birmingham homeowners</span>
+                    </div>
+                    <p className="form__urgency">Fitting slots available from June — book early to secure yours</p>
+                    <p className="form__reassurance">Free · No obligation · Takes 60 seconds</p>
+                    {step < 5 && <p className="form__step-indicator">Step {step} of 4</p>}
                 </div>
 
+                {/* Step 1 — Material */}
                 {step === 1 && (
                     <div className="form__step">
-                        {!showQuartzStyles ? (
-                            <>
-                                <h3 className="form__question">
-                                    What material are you interested in?
-                                </h3>
-                                <p className="form__note">
-                                    This is not a commitment and can be changed at any time.
-                                </p>
-                                <div className="form__options">
-                                    {MATERIALS.map((m) => (
-                                        <button
-                                            key={m.id}
-                                            className={`form__option ${answers.material === m.id ? 'form__option--selected' : ''}`}
-                                            onClick={() => selectOption('material', m.id)}
-                                        >
-                                            {m.label}
-                                        </button>
-                                    ))}
-                                </div>
+                        <h3 className="form__question">What material are you interested in?</h3>
+                        <p className="form__note">Not a commitment — can be changed at any time.</p>
+                        <div className="form__options">
+                            {MATERIALS.map((m) => (
                                 <button
-                                    className="form__next form__next--auto-advance"
-                                    onClick={nextStep}
-                                    disabled={!answers.material}
+                                    key={m.id}
+                                    className={`form__option ${answers.material === m.id ? 'form__option--selected' : ''}`}
+                                    onClick={() => selectOption('material', m.id)}
                                 >
-                                    Next →
+                                    {m.label}
                                 </button>
-                            </>
-                        ) : (
-                            <>
-                                <h3 className="form__question">
-                                    Which quartz style interests you?
-                                </h3>
-                                <p className="form__note">
-                                    This is not a commitment and can be changed at any time.
-                                </p>
-                                <div className="form__sizes">
-                                    {QUARTZ_STYLES.map((s) => (
-                                        <button
-                                            key={s.id}
-                                            className={`form__size-option ${answers.quartzStyle === s.id ? 'form__size-option--selected' : ''}`}
-                                            onClick={() => selectOption('quartzStyle', s.id)}
-                                        >
-                                            <img
-                                                src={s.src}
-                                                alt={s.label}
-                                                className="form__size-img"
-                                                style={{ objectPosition: s.position }}
-                                            />
-                                            <span className="form__size-label">{s.label}</span>
-                                            <span className="form__size-desc">{s.description}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                                <div className="form__nav">
-                                    <button
-                                        className="form__back"
-                                        onClick={() => setShowQuartzStyles(false)}
-                                    >
-                                        ← Back
-                                    </button>
-                                    <button
-                                        className="form__next form__next--auto-advance"
-                                        onClick={nextStep}
-                                        disabled={!answers.quartzStyle}
-                                    >
-                                        Next →
-                                    </button>
-                                </div>
-                            </>
-                        )}
+                            ))}
+                        </div>
+                        <button className="form__next form__next--auto-advance" onClick={nextStep} disabled={!answers.material}>
+                            Next →
+                        </button>
                     </div>
                 )}
 
+                {/* Step 2 — Kitchen size */}
                 {step === 2 && (
                     <div className="form__step">
+                        <h3 className="form__question">What size is your kitchen?</h3>
+                        <div className="form__sizes">
+                            {SIZES.map((s) => (
+                                <button
+                                    key={s.id}
+                                    className={`form__size-option ${answers.size === s.id ? 'form__size-option--selected' : ''}`}
+                                    onClick={() => selectOption('size', s.id)}
+                                >
+                                    <img src={s.src} alt={s.label} className="form__size-img" loading="lazy" />
+                                    <span className="form__size-label">{s.label}</span>
+                                    <span className="form__size-desc">{s.description}</span>
+                                </button>
+                            ))}
+                        </div>
+                        <div className="form__nav">
+                            <button className="form__back" onClick={prevStep}>← Back</button>
+                            <button className="form__next form__next--auto-advance" onClick={nextStep} disabled={!answers.size}>Next →</button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Step 3 — Postcode */}
+                {step === 3 && (
+                    <div className="form__step">
                         <h3 className="form__question">What is your postcode?</h3>
-                        <p className="form__note">
-                            We use this to match you with a local specialist.
-                        </p>
+                        <p className="form__note">We use this to match you with a local specialist.</p>
                         <div className="form__fields">
                             <input
                                 className="form__input"
@@ -290,39 +191,11 @@ export default function QuoteForm() {
                     </div>
                 )}
 
-                {step === 3 && (
-                    <div className="form__step">
-                        <h3 className="form__question">What size is your kitchen?</h3>
-                        <div className="form__sizes">
-                            {SIZES.map((s) => (
-                                <button
-                                    key={s.id}
-                                    className={`form__size-option ${answers.size === s.id ? 'form__size-option--selected' : ''}`}
-                                    onClick={() => selectOption('size', s.id)}
-                                >
-                                    <img
-                                        src={s.src}
-                                        alt={s.label}
-                                        className="form__size-img"
-                                    />
-                                    <span className="form__size-label">{s.label}</span>
-                                    <span className="form__size-desc">{s.description}</span>
-                                </button>
-                            ))}
-                        </div>
-                        <div className="form__nav">
-                            <button className="form__back" onClick={prevStep}>← Back</button>
-                            <button className="form__next form__next--auto-advance" onClick={nextStep} disabled={!answers.size}>Next →</button>
-                        </div>
-                    </div>
-                )}
-
+                {/* Step 4 — Contact */}
                 {step === 4 && (
                     <div className="form__step">
                         <h3 className="form__question">Almost done — where shall we send your quote?</h3>
-                        <p className="form__note">
-                            No spam. Ever. We only use your details for your quote.
-                        </p>
+                        <p className="form__note">No spam. Ever. We only use your details for your quote.</p>
                         <div className="form__fields">
                             <input
                                 className="form__input"
@@ -354,6 +227,7 @@ export default function QuoteForm() {
                     </div>
                 )}
 
+                {/* Step 5 — Success */}
                 {step === 5 && (
                     <div className="form__success">
                         <p className="form__success-icon">✓</p>
