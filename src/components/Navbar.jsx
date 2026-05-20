@@ -23,7 +23,11 @@ export default function Navbar() {
 
   return (
     <nav className="navbar" ref={navRef}>
-      <p className="navbar__logo">Kitchen Worktop Experts</p>
+      <div className="navbar__logo">
+        <span className="navbar__logo-top">Kitchen Worktop</span>
+        <span className="navbar__logo-rule" />
+        <span className="navbar__logo-bottom">Experts</span>
+      </div>
 
       {/* Burger menu */}
       <button
@@ -38,6 +42,7 @@ export default function Navbar() {
       <div className={`navbar__links${isOpen ? ' navbar__links--open' : ''}`}>
         <Link className="navbar__link" to="/" onClick={() => setIsOpen(false)}>Home</Link>
         <Link className="navbar__link" to="/gallery" onClick={() => setIsOpen(false)}>Gallery</Link>
+        <Link className="navbar__link" to="/materials" onClick={() => setIsOpen(false)}>Materials</Link>
         <a className="navbar__phone" href="tel:07389185503" onClick={() => setIsOpen(false)}>07389 185503</a>
         <a className="navbar__cta" href="/#quote" onClick={() => setIsOpen(false)}>Get a Quote</a>
       </div>

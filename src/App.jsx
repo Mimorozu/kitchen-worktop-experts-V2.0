@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import GalleryPage from './pages/GalleryPage'
+import MaterialsPage from './pages/MaterialsPage'
 import StickyQuoteCTA from './components/StickyQuoteCTA'
 
 export default function App() {
@@ -12,6 +13,7 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/gallery" element={<GalleryPage />} />
+                <Route path="/materials" element={<MaterialsPage />} />
             </Routes>
             <Footer />
             <StickyQuoteCTA />
