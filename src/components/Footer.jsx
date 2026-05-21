@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 const QUICK_LINKS = [
   { label: 'Home', path: '/' },
   { label: 'Gallery', path: '/gallery' },
+  { label: 'Materials', path: '/materials' },
 ]
 
 const AREAS = [
@@ -38,7 +39,7 @@ export default function Footer() {
         <div className="footer__brand">
           <p className="footer__logo">Kitchen Worktop Experts</p>
           <p className="footer__tagline">
-            Connecting homeowners with trusted worktop specialists across the West Midlands.
+            Supplying homeowners with luxury worktops across the West Midlands.
           </p>
           <div className="footer__contact">
             <a href="tel:+441213456789" className="footer__contact-link">
@@ -66,7 +67,7 @@ export default function Footer() {
 
         {/* CTA column */}
         <div className="footer__cta">
-          <p className="footer__cta-heading">Get quotes from local specialists</p>
+          <p className="footer__cta-heading">Get quotes from your local specialists</p>
           <p className="footer__cta-sub">Free, no-obligation. Takes 2 minutes.</p>
           <button className="footer__button" onClick={() => scrollTo('quote')}>
             Get My Free Quote →

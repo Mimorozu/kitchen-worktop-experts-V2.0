@@ -1,11 +1,13 @@
 // src/components/Navbar.jsx
 import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 export default function Navbar() {
 
   const [isOpen, setIsOpen] = useState(false)
   const navRef = useRef(null)
+  const { pathname } = useLocation()
+  const isStatic = pathname === '/materials'
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -22,7 +24,7 @@ export default function Navbar() {
   }, [isOpen])
 
   return (
-    <nav className="navbar" ref={navRef}>
+    <nav className={`navbar${isStatic ? ' navbar--static' : ''}`} ref={navRef}>
       <div className="navbar__logo">
         <span className="navbar__logo-top">Kitchen Worktop</span>
         <span className="navbar__logo-rule" />

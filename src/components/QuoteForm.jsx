@@ -113,14 +113,24 @@ export default function QuoteForm() {
 
                 <div className="form__header">
                     <p className="section__eyebrow">Free Quote</p>
-                    <h2 className="section__heading">Get Your Free<br />Worktop Quote</h2>
+                    <h2 className="section__heading">Add Some Class<br /> Get A Quote</h2>
                     <div className="form__social-proof">
                         <span className="form__stars">★★★★★</span>
                         <span>Trusted by 120+ Birmingham homeowners</span>
                     </div>
                     <p className="form__urgency">Fitting slots available from June — book early to secure yours</p>
                     <p className="form__reassurance">Free · No obligation · Takes 60 seconds</p>
-                    {step < 5 && <p className="form__step-indicator">Step {step} of 4</p>}
+                    {step < 5 && (
+                        <div className="form__progress">
+                            <div className="form__progress-label">Step {step} of 4</div>
+                            <div className="form__progress-track">
+                                <div
+                                    className="form__progress-fill"
+                                    style={{ width: `${(step / 4) * 100}%` }}
+                                />
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Step 1 — Material */}

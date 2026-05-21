@@ -8,13 +8,13 @@ const STEPS = [
   },
   {
     number: '02',
-    title: 'We Match You Instantly',
+    title: 'Get Your Price Instantly',
     description: 'We can provide you with an estimate based on the information you give us.',
   },
   {
     number: '03',
     title: 'Get Your Worktop Fitted',
-    description: 'Your specialist emails you to confrim your design and arrange a template and fit. It\'s that easy.'
+    description: 'Your specialist emails you to confirm your design and arrange a template and fit. It\'s that easy.'
   },
 ]
 

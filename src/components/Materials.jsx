@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const PRICE_TIERS = {
     essential: { label: '£',    title: 'Essential'},
@@ -72,6 +73,14 @@ export default function Materials() {
     const [priceFilter, setPriceFilter]   = useState(null)
     const [colourFilter, setColourFilter] = useState(null)
     const [activeImage, setActiveImage]   = useState(null)
+    const navigate = useNavigate()
+
+    function goToQuote() {
+        navigate('/')
+        setTimeout(() => {
+            document.getElementById('quote')?.scrollIntoView({ behavior: 'smooth' })
+        }, 150)
+    }
 
     useEffect(() => {
         function handleKey(e) {
@@ -167,9 +176,6 @@ export default function Materials() {
                             <div className="materials__card-info">
                                 <span className="materials__card-name">{m.name}</span>
                                 <div className="materials__card-meta">
-                                    <span className="materials__price-badge">
-                                        {PRICE_TIERS[m.price].label}&ensp;{PRICE_TIERS[m.price].title}
-                                    </span>
                                     <div className="materials__colour-tags">
                                         {m.colours.map(c => (
                                             <span key={c} className="materials__colour-tag">
@@ -181,6 +187,9 @@ export default function Materials() {
                                         ))}
                                     </div>
                                 </div>
+                                <button className="materials__quote-btn" onClick={goToQuote}>
+                                    Get a Quote
+                                </button>
                             </div>
                         </div>
                     ))}
