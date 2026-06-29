@@ -470,6 +470,12 @@ body {
   transition: width 0.35s ease;
 }
 
+@media (max-width: 639px) {
+  .form__progress-track {
+    height: 8px;
+  }
+}
+
 .form__question {
   font-size: 1.2rem;
   font-weight: 600;

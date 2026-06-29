@@ -3,17 +3,17 @@ import { useState } from 'react'
 import ReactGA from 'react-ga4'
 
 const MATERIALS = [
-    { id: 'quartz',     label: 'Quartz' },
-    { id: 'granite',    label: 'Granite' },
-    { id: 'marble',     label: 'Marble' },
-    { id: 'porcelain',  label: 'Porcelain' },
-    { id: 'unsure',     label: 'Not Sure Yet' },
+    { id: 'quartz', label: 'Quartz' },
+    { id: 'granite', label: 'Granite' },
+    { id: 'marble', label: 'Marble' },
+    { id: 'porcelain', label: 'Porcelain' },
+    { id: 'unsure', label: 'Not Sure Yet' },
 ]
 
 const SIZES = [
-    { id: 'small',  label: 'Small',  description: 'Worktop runs only',        src: '/kitchen-small.webp' },
+    { id: 'small', label: 'Small', description: 'Worktop runs only', src: '/kitchen-small.webp' },
     { id: 'medium', label: 'Medium', description: 'Small island and worktops', src: '/medium-kitchen.webp' },
-    { id: 'large',  label: 'Large',  description: 'Large island and worktops', src: '/kitchen-large.webp' },
+    { id: 'large', label: 'Large', description: 'Large island and worktops', src: '/kitchen-large.webp' },
 ]
 
 // Step order: material → size → postcode → contact
@@ -69,25 +69,27 @@ export default function QuoteForm() {
     async function handleSubmit() {
         setIsSubmitting(true)
 
-        const token  = import.meta.env.VITE_AIRTABLE_TOKEN
-        const baseId = import.meta.env.VITE_AIRTABLE_BASE_ID
-        const table  = import.meta.env.VITE_AIRTABLE_TABLE
+        // orginial airtable api
+        //const token  = import.meta.env.VITE_AIRTABLE_TOKEN
+        //const baseId = import.meta.env.VITE_AIRTABLE_BASE_ID
+        //const table  = import.meta.env.VITE_AIRTABLE_TABLE
 
+        // CRM API 
         try {
-            await fetch(`https://api.airtable.com/v0/${baseId}/${table}`, {
+            await fetch(`${import.meta.env.VITE_CRM_API_URL}/api/leads`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${import.meta.env.VITE_CRM_API_TOKEN}`
                 },
                 body: JSON.stringify({
-                    fields: {
-                        Name:     answers.name,
-                        Email:    answers.email,
-                        Postcode: answers.postcode,
-                        Material: answers.material,
-                        Size:     answers.size,
-                    }
+                    name: answers.name,
+                    email: answers.email,
+                    postcode: answers.postcode,
+                    material: answers.material,
+                    size: answers.size,
+                    phone: 'Not provided',
+                    source: 'Website'
                 })
             })
 
@@ -113,7 +115,7 @@ export default function QuoteForm() {
 
                 <div className="form__header">
                     <p className="section__eyebrow">Free Quote</p>
-                    <h2 className="section__heading">Add Some Class<br /> Get A Quote</h2>
+                    <h2 className="section__heading">Want An Estimate<br /> For Your Kitchen?</h2>
                     <div className="form__social-proof">
                         <span className="form__stars">★★★★★</span>
                         <span>Trusted by 120+ Birmingham homeowners</span>
@@ -121,13 +123,10 @@ export default function QuoteForm() {
                     <p className="form__urgency">Fitting slots available from June — book early to secure yours</p>
                     <p className="form__reassurance">Free · No obligation · Takes 60 seconds</p>
                     {step < 5 && (
-                        <div className="form__progress">
-                            <div className="form__progress-label">Step {step} of 4</div>
+                        <div className="form__progress" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={4} aria-label={`Step ${step} of 4`}>
+                            <p className="form__progress-label">Step {step} of 4</p>
                             <div className="form__progress-track">
-                                <div
-                                    className="form__progress-fill"
-                                    style={{ width: `${(step / 4) * 100}%` }}
-                                />
+                                <div className="form__progress-fill" style={{ width: `${(step / 4) * 100}%` }} />
                             </div>
                         </div>
                     )}
