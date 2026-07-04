@@ -69,18 +69,12 @@ export default function QuoteForm() {
     async function handleSubmit() {
         setIsSubmitting(true)
 
-        // orginial airtable api
-        //const token  = import.meta.env.VITE_AIRTABLE_TOKEN
-        //const baseId = import.meta.env.VITE_AIRTABLE_BASE_ID
-        //const table  = import.meta.env.VITE_AIRTABLE_TABLE
-
-        // CRM API 
         try {
             await fetch(`${import.meta.env.VITE_CRM_API_URL}/api/leads`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${import.meta.env.VITE_CRM_API_TOKEN}`
+                    'x-api-key': import.meta.env.VITE_CRM_API_KEY
                 },
                 body: JSON.stringify({
                     name: answers.name,

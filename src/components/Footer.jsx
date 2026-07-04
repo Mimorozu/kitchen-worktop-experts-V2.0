@@ -13,16 +13,17 @@ const AREAS = [
 ]
 
 export default function Footer() {
-  const navigate = useNavigate()
+  const navigate = useNavigate() // navigate user programatically 
 
+  // function to scroll the user to the quote form
   function scrollTo(id) {
-    const el = document.getElementById(id)
+    const el = document.getElementById(id) // get the quote form with element by ID
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' })
+      el.scrollIntoView({ behavior: 'smooth' }) // if el is true use a built in function to smmoothly scroll the viewport to the element
     } else {
-      navigate('/')
+      navigate('/') // if not found, navigate home where the quote form is
       setTimeout(() => {
-        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }) //wait 150ms for the page to render and try and scroll again
       }, 150)
     }
   }
