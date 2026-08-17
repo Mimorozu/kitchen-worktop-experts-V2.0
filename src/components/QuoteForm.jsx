@@ -33,6 +33,7 @@ export default function QuoteForm() {
         postcode: '',
         name: '',
         email: '',
+        phone: '',
     })
 
     function trackStep(stepNumber, stepName) {
@@ -82,7 +83,7 @@ export default function QuoteForm() {
                     postcode: answers.postcode,
                     material: answers.material,
                     size: answers.size,
-                    phone: 'Not provided',
+                    phone: answers.phone || 'Not provided',
                     source: 'Website'
                 })
             })
@@ -216,13 +217,21 @@ export default function QuoteForm() {
                                 value={answers.email}
                                 onChange={(e) => handleAnswer('email', e.target.value)}
                             />
+                            <input
+                                className="form__input"
+                                type="tel"
+                                placeholder="Phone Number"
+                                autoComplete="tel"
+                                value={answers.phone}
+                                onChange={(e) => handleAnswer('phone', e.target.value)}
+                            />
                         </div>
                         <div className="form__nav">
                             <button className="form__back" onClick={prevStep}>← Back</button>
                             <button
                                 className="form__next"
                                 onClick={handleSubmit}
-                                disabled={!answers.name || !answers.email || isSubmitting}
+                                disabled={!answers.name || !answers.email || !answers.phone || isSubmitting}
                             >
                                 {isSubmitting ? 'Sending...' : 'Get My Free Quote →'}
                             </button>
