@@ -71,7 +71,7 @@ export default function QuoteForm() {
         setIsSubmitting(true)
 
         try {
-            await fetch(`${import.meta.env.VITE_CRM_API_URL}/api/leads`, {
+            const response = await fetch(`${import.meta.env.VITE_CRM_API_URL}/api/leads`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,6 +87,10 @@ export default function QuoteForm() {
                     source: 'Website'
                 })
             })
+
+            if (!response.ok) {
+                throw new Error(`Lead submission failed with status ${response.status}`)
+            }
 
             ReactGA.event({
                 category: 'Lead',
@@ -106,11 +110,16 @@ export default function QuoteForm() {
 
     return (
         <section className="form" id="quote">
+            <div className="form__header-outer">
+                <div className="pricing__header">
+                    <p className="section__eyebrow">Free Quote</p>
+                    <h2 className="section__heading">Want An Estimate<br /> For Your Kitchen?</h2>
+                </div>
+            </div>
+
             <div className="form__inner">
 
                 <div className="form__header">
-                    <p className="section__eyebrow">Free Quote</p>
-                    <h2 className="section__heading">Want An Estimate<br /> For Your Kitchen?</h2>
                     <div className="form__social-proof">
                         <span className="form__stars">★★★★★</span>
                         <span>Trusted by 120+ Birmingham homeowners</span>

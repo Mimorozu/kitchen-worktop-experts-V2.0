@@ -4,7 +4,7 @@ const STEPS = [
   {
     number: '01',
     title: 'Tell Us What You Need',
-    description: 'Fill in our 60-second quote form. Postcode, Material and size — that\'s all we need.',
+    description: 'Fill in our 60-second quote form. Postcode, Material, size and a number to contact you on — that\'s all we need.',
   },
   {
     number: '02',
@@ -22,7 +22,7 @@ export default function HowItWorks() {
   return (
     <section className="hiw">
 
-      <div className="hiw__header">
+      <div className="hiw__header pricing__header">
         <p className="section__eyebrow">The Process</p>
         <h2 className="section__heading">From Quote to Kitchen<br />in Three Steps</h2>
       </div>

@@ -10,14 +10,12 @@ export default function Hero() {
         Birmingham's Worktop Specialists
         </p>
         <h1 className="hero__headline">
-          Tired Of Your Old Worktops? We'll Fix That.
+          Let's make your vision a reality
         </h1>
         <p className="hero__sub">
           Quartz, granite & marble from trusted suppliers
         </p>
-        <p className="hero__sub">
-          From £2,700 - Supply & fit included
-        </p>
+        
         {/* call to action button + scroll to element by ID */}
         <button
           className="hero__cta"
@@ -29,7 +27,7 @@ export default function Hero() {
       </div>
 
       <div className="hero__gallery">
-        <img src='/hero-img.webp' className="hero__gallery-img" fetchpriority="high" alt="Kitchen worktop" />
+        <img src='/hero-img.jpg' className="hero__gallery-img" fetchpriority="high" alt="Kitchen worktop" />
       </div>
 
     </section>

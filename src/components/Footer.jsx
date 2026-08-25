@@ -5,6 +5,7 @@ const QUICK_LINKS = [
   { label: 'Home', path: '/' },
   { label: 'Gallery', path: '/gallery' },
   { label: 'Materials', path: '/materials' },
+  { label: 'Guides', path: '/guides' },
 ]
 
 const AREAS = [
@@ -31,14 +32,15 @@ export default function Footer() {
   return (
     <footer className="footer">
 
-      {/* Gold accent line at top */}
-      <div className="footer__accent" />
-
       <div className="footer__inner">
 
         {/* Brand column */}
         <div className="footer__brand">
-          <p className="footer__logo">Kitchen Worktop Experts</p>
+          <div className="footer__wordmark">
+            <span className="footer__wordmark-top">Kitchen Worktop</span>
+            <span className="footer__wordmark-rule" />
+            <span className="footer__wordmark-bottom">Experts</span>
+          </div>
           <p className="footer__tagline">
             Supplying homeowners with luxury worktops across the West Midlands.
           </p>
@@ -52,7 +54,16 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Quick links column */}
+        {/* CTA card */}
+        <div className="footer__cta">
+          <p className="footer__cta-heading">Get quotes from your local specialists</p>
+          <p className="footer__cta-sub">Free, no-obligation. Takes 2 minutes.</p>
+          <button className="footer__button" onClick={() => scrollTo('quote')}>
+            Get My Free Quote →
+          </button>
+        </div>
+
+        {/* Quick links row */}
         <nav className="footer__links" aria-label="Footer navigation">
           <p className="footer__col-heading">Quick Links</p>
           <ul className="footer__link-list">
@@ -65,15 +76,6 @@ export default function Footer() {
             ))}
           </ul>
         </nav>
-
-        {/* CTA column */}
-        <div className="footer__cta">
-          <p className="footer__cta-heading">Get quotes from your local specialists</p>
-          <p className="footer__cta-sub">Free, no-obligation. Takes 2 minutes.</p>
-          <button className="footer__button" onClick={() => scrollTo('quote')}>
-            Get My Free Quote →
-          </button>
-        </div>
 
       </div>
 
