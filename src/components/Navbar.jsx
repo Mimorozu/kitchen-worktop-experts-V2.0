@@ -9,8 +9,7 @@ function getInitialIntroStage(pathname) {
   if (pathname !== '/') return 'done'
   if (typeof window === 'undefined') return 'done'
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 'done'
-  // once-per-session gate disabled while tuning the intro
-  // if (sessionStorage.getItem(INTRO_SEEN_KEY)) return 'done'
+  if (sessionStorage.getItem(INTRO_SEEN_KEY)) return 'done'
   return 'pending'
 }
 
