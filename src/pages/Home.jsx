@@ -4,7 +4,7 @@ import Hero from '../components/Hero'
 import Statement from '../components/Statement'
 import RecentWorks from '../components/RecentWorks'
 import HowItWorks from '../components/HowItWorks'
-import Pricing from '../components/Pricing'
+// import Pricing from '../components/Pricing' // hidden for now, kept for later use
 import QuoteForm from '../components/QuoteForm'
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
             {/* <TrustBar /> */}
             <Statement />
             <RecentWorks />
-            <Pricing />
+            {/* <Pricing /> */}
             <HowItWorks />
 
             <QuoteForm />

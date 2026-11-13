@@ -14,20 +14,6 @@
   --font-body: 'DM Sans', sans-serif;
 
   --max-width: 1100px;
-
-  --intro-logo-scale: 4.5;
-}
-
-@media (max-width: 639px) {
-  :root {
-    --intro-logo-scale: 2.4;
-  }
-}
-
-@media (min-width: 640px) and (max-width: 1023px) {
-  :root {
-    --intro-logo-scale: 3.4;
-  }
 }
 
 /* ── Reset ───────────────────────────────────── */
@@ -68,21 +54,6 @@ body {
   max-width: 640px;
   padding: 140px clamp(40px, 6vw, 100px) 80px clamp(40px, 7vw, 120px);
   gap: 0;
-}
-
-body[data-intro="pending"] .hero__content,
-body[data-intro="nav"] .hero__content {
-  pointer-events: none;
-}
-
-body[data-intro="pending"] .hero__content > *,
-body[data-intro="nav"] .hero__content > * {
-  opacity: 0;
-  transform: translateY(22px);
-}
-
-body[data-intro="hero"] .hero__content {
-  pointer-events: auto;
 }
 
 body[data-intro="hero"] .hero__content > * {
@@ -1034,52 +1005,21 @@ body[data-intro="hero"] .hero__content > *:nth-child(5) {
   border-bottom-color: var(--color-border);
 }
 
-/* ── Load intro ──────────────────────────────── */
-body[data-intro="pending"] .navbar__logo {
-  opacity: 0;
-}
-
-body[data-intro="pending"] .navbar__nav-links,
-body[data-intro="pending"] .navbar__actions,
-body[data-intro="pending"] .navbar__burger {
-  opacity: 0;
-  pointer-events: none;
-}
-
-body[data-intro="nav"] .navbar__logo,
-body[data-intro="hero"] .navbar__logo {
-  opacity: 1;
-}
-
-body[data-intro="nav"] .navbar__nav-links,
-body[data-intro="nav"] .navbar__actions,
-body[data-intro="nav"] .navbar__burger,
+/* ── Load intro: nav fades in like hero content ── */
+body[data-intro="hero"] .navbar__logo,
 body[data-intro="hero"] .navbar__nav-links,
 body[data-intro="hero"] .navbar__actions,
 body[data-intro="hero"] .navbar__burger {
-  opacity: 1;
-  pointer-events: auto;
-  transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: introNavFade 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.intro-logo-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.intro-logo-overlay__mark {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  line-height: 1;
-  opacity: 0;
-  transform: scale(var(--intro-logo-scale));
+@keyframes introNavFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .navbar__nav-links,

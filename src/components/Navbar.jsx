@@ -10,7 +10,7 @@ function getInitialIntroStage(pathname) {
   if (typeof window === 'undefined') return 'done'
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 'done'
   if (sessionStorage.getItem(INTRO_SEEN_KEY)) return 'done'
-  return 'pending'
+  return 'hero'
 }
 
 export default function Navbar() {
@@ -19,8 +19,6 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const navRef = useRef(null)
   const menuRef = useRef(null)
-  const logoRef = useRef(null)
-  const introMarkRef = useRef(null)
   const { pathname } = useLocation()
   const isStatic = pathname === '/materials' || pathname === '/gallery' || pathname.startsWith('/guides')
 
@@ -34,76 +32,16 @@ export default function Navbar() {
     }
   }, [stage])
 
-  // Load intro: overlay logo fades in centered, pauses, then flies/shrinks
-  // into the real navbar logo's position before the rest of the nav and
-  // hero content reveal.
+  // Load intro: nav and hero content fade in together on first visit.
+  // Nav fades via CSS keyframes in the 'hero' stage; no logo flight.
   useEffect(() => {
-    // Only orchestrate on the initial mount when the load intro is due to
-    // play. Internal setStage calls advance the sequence without re-running
-    // or tearing down this effect.
-    if (stage !== 'pending') return
-
-    const overlayEl = introMarkRef.current
-    const targetEl = logoRef.current
-    if (!overlayEl || !targetEl) {
-      setStage('done')
-      return
-    }
+    if (stage !== 'hero') return
 
     sessionStorage.setItem(INTRO_SEEN_KEY, '1')
 
-    let cancelled = false
-    const timers = []
-    const animations = []
-
-    const fadeIn = overlayEl.animate(
-      [{ opacity: 0 }, { opacity: 1 }],
-      { duration: 1300, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' }
-    )
-    animations.push(fadeIn)
-
-    fadeIn.onfinish = () => {
-      if (cancelled) return
-      timers.push(setTimeout(() => {
-        if (cancelled) return
-
-        const overlayRect = overlayEl.getBoundingClientRect()
-        const targetRect = targetEl.getBoundingClientRect()
-        const dx = (targetRect.left + targetRect.width / 2) - (overlayRect.left + overlayRect.width / 2)
-        const dy = (targetRect.top + targetRect.height / 2) - (overlayRect.top + overlayRect.height / 2)
-        const startScale = getComputedStyle(document.documentElement).getPropertyValue('--intro-logo-scale').trim() || '4.5'
-
-        const flight = overlayEl.animate(
-          [
-            { transform: `scale(${startScale})` },
-            { transform: `translate(${dx}px, ${dy}px) scale(1)` }
-          ],
-          { duration: 1500, easing: 'cubic-bezier(0.65, 0, 0.15, 1)', fill: 'forwards' }
-        )
-        animations.push(flight)
-
-        flight.onfinish = () => {
-          if (cancelled) return
-          setStage('nav')
-          timers.push(setTimeout(() => {
-            if (cancelled) return
-            setStage('hero')
-            timers.push(setTimeout(() => {
-              if (cancelled) return
-              setStage('done')
-            }, 1300))
-          }, 750))
-        }
-      }, 900))
-    }
-
-    return () => {
-      cancelled = true
-      timers.forEach(clearTimeout)
-      animations.forEach((a) => a.cancel())
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    const timer = setTimeout(() => setStage('done'), 1300)
+    return () => clearTimeout(timer)
+  }, [stage])
 
   useEffect(() => {
     function handleScroll() {
@@ -144,7 +82,7 @@ export default function Navbar() {
         <Link className="navbar__link" to="/guides" onClick={snapToTop}>Guides</Link>
       </div>
 
-      <Link className="navbar__logo" to="/" ref={logoRef} onClick={snapToTop}>
+      <Link className="navbar__logo" to="/" onClick={snapToTop}>
         <span className="navbar__logo-top">Kitchen Worktop</span>
         <span className="navbar__logo-rule" />
         <span className="navbar__logo-bottom">Experts</span>
@@ -190,15 +128,6 @@ export default function Navbar() {
         document.body
       )}
 
-      {stage === 'pending' && (
-        <div className="intro-logo-overlay" aria-hidden="true">
-          <div className="intro-logo-overlay__mark" ref={introMarkRef}>
-            <span className="navbar__logo-top">Kitchen Worktop</span>
-            <span className="navbar__logo-rule" />
-            <span className="navbar__logo-bottom">Experts</span>
-          </div>
-        </div>
-      )}
     </nav>
   )
 }
