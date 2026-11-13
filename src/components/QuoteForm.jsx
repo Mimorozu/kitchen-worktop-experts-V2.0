@@ -71,11 +71,10 @@ export default function QuoteForm() {
         setIsSubmitting(true)
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_CRM_API_URL}/api/leads`, {
+            const response = await fetch('/api/leads', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-api-key': import.meta.env.VITE_CRM_API_KEY
                 },
                 body: JSON.stringify({
                     name: answers.name,
