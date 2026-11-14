@@ -39,3 +39,6 @@ dist
 Thumbs.db
 .vercel
 .env*
+
+# Claude project notes
+CLAUDE.md
