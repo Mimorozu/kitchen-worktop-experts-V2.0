@@ -68,6 +68,7 @@ export default function QuoteForm() {
     }
 
     async function handleSubmit() {
+        trackStep(4, STEP_NAMES[4])
         setIsSubmitting(true)
 
         try {
