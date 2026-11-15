@@ -253,6 +253,29 @@ export default function QuoteForm() {
                     <div className="form__success">
                         <p className="form__success-icon">✓</p>
                         <h3 className="form__success-title">Quote Request Received</h3>
+
+                        <div className="estimate" aria-label="Estimate">
+                            <div className="estimate__header">
+                                <span className="estimate__brand">Kitchen Worktop Experts</span>
+                                <span className="estimate__stamp">Estimate</span>
+                            </div>
+                            <div className="estimate__row">
+                                <span>Kitchen size</span>
+                                <span>{SIZES.find((s) => s.id === answers.size)?.label}</span>
+                            </div>
+                            <div className="estimate__row">
+                                <span>Material</span>
+                                <span>{MATERIALS.find((m) => m.id === answers.material)?.label}</span>
+                            </div>
+                            <div className="estimate__row estimate__row--total">
+                                <span>Estimated range</span>
+                                <span>£1,935 – £5,235</span>
+                            </div>
+                            <p className="estimate__note">
+                                Indicative only. Your final quote is confirmed after we measure your kitchen.
+                            </p>
+                        </div>
+
                         <p className="form__success-text">
                             A local specialist will contact you within the hour.
                             Check your email for confirmation.

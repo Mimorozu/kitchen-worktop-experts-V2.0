@@ -6,6 +6,7 @@ import GalleryPage from './pages/GalleryPage'
 import MaterialsPage from './pages/MaterialsPage'
 import GuidesPage from './pages/GuidesPage'
 import GuidePage from './pages/GuidePage'
+import QuartzBirminghamPage from './pages/QuartzBirminghamPage'
 import StickyQuoteCTA from './components/StickyQuoteCTA'
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
                 <Route path="/materials" element={<MaterialsPage />} />
                 <Route path="/guides" element={<GuidesPage />} />
                 <Route path="/guides/:slug" element={<GuidePage />} />
+                <Route path="/quartz-worktops-birmingham" element={<QuartzBirminghamPage />} />
             </Routes>
             <Footer />
             <StickyQuoteCTA />
