@@ -2704,3 +2704,27 @@ body[data-intro="hero"] .navbar__burger {
     display: none;
   }
 }
+
+/* ── Landing hero: photo behind the text, with a scrim for legibility ── */
+.lp-hero {
+  background:
+    linear-gradient(180deg, rgba(20, 18, 14, 0.55) 0%, rgba(20, 18, 14, 0.7) 100%),
+    url('/hero-img.jpg') center top / cover no-repeat;
+}
+
+.lp-hero .section__eyebrow {
+  color: #e6c98f;
+}
+
+.lp-hero__heading {
+  color: #fbf8f2;
+}
+
+.lp-hero__sub,
+.lp-hero__phone {
+  color: #e7e2d8;
+}
+
+.lp-hero__phone a {
+  color: #e6c98f;
+}

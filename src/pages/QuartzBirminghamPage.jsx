@@ -1,14 +1,14 @@
 // src/pages/QuartzBirminghamPage.jsx
 // Landing page for paid search traffic (quartz worktops Birmingham).
 // Puts the quote form near the top so ad visitors don't have to scroll the homepage.
-import { MapPin, Handshake, Wrench } from '@phosphor-icons/react'
+import { MapPin, Medal, ShieldCheck } from '@phosphor-icons/react'
 import Seo from '../components/Seo'
 import QuoteForm from '../components/QuoteForm'
 
 const POINTS = [
   { Icon: MapPin, title: 'Local to Birmingham' },
-  { Icon: Handshake, title: 'Free, no-obligation quote' },
-  { Icon: Wrench, title: 'Supply and fit' },
+  { Icon: Medal, title: '11 years of experience' },
+  { Icon: ShieldCheck, title: '10-year warranty' },
 ]
 
 const MATERIALS = ['Quartz', 'Granite', 'Marble', 'Porcelain']

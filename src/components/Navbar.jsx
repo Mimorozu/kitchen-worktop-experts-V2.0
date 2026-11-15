@@ -20,7 +20,7 @@ export default function Navbar() {
   const navRef = useRef(null)
   const menuRef = useRef(null)
   const { pathname } = useLocation()
-  const isStatic = pathname === '/materials' || pathname === '/gallery' || pathname.startsWith('/guides') || pathname === '/quartz-worktops-birmingham'
+  const isStatic = pathname === '/materials' || pathname === '/gallery' || pathname.startsWith('/guides')
 
   const [stage, setStage] = useState(() => getInitialIntroStage(pathname))
 
