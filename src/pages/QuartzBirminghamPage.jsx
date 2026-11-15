@@ -1,13 +1,14 @@
 // src/pages/QuartzBirminghamPage.jsx
 // Landing page for paid search traffic (quartz worktops Birmingham).
 // Puts the quote form near the top so ad visitors don't have to scroll the homepage.
+import { MapPin, Handshake, Wrench } from '@phosphor-icons/react'
 import Seo from '../components/Seo'
 import QuoteForm from '../components/QuoteForm'
 
 const POINTS = [
-  { title: 'Local to Birmingham', text: 'Based in the West Midlands, so we can visit, measure and fit without long delays.' },
-  { title: 'Free, no-obligation quote', text: 'Tell us your material, kitchen size and postcode. A local specialist gets back to you.' },
-  { title: 'Supply and fit', text: 'Quartz, granite, marble and porcelain worktops, supplied and fitted by our team.' },
+  { Icon: MapPin, title: 'Local to Birmingham' },
+  { Icon: Handshake, title: 'Free, no-obligation quote' },
+  { Icon: Wrench, title: 'Supply and fit' },
 ]
 
 const MATERIALS = ['Quartz', 'Granite', 'Marble', 'Porcelain']
@@ -44,10 +45,10 @@ export default function QuartzBirminghamPage() {
       </section>
 
       <section className="lp-points">
-        {POINTS.map((p) => (
-          <div className="lp-point" key={p.title}>
-            <h2 className="lp-point__title">{p.title}</h2>
-            <p className="lp-point__text">{p.text}</p>
+        {POINTS.map(({ Icon, title }) => (
+          <div className="lp-point" key={title}>
+            <Icon className="lp-point__icon" size={32} weight="regular" aria-hidden="true" />
+            <h2 className="lp-point__title">{title}</h2>
           </div>
         ))}
       </section>

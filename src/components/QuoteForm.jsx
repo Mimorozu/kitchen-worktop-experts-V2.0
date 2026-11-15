@@ -120,12 +120,6 @@ export default function QuoteForm() {
             <div className="form__inner">
 
                 <div className="form__header">
-                    <div className="form__social-proof">
-                        <span className="form__stars">★★★★★</span>
-                        <span>Trusted by 120+ Birmingham homeowners</span>
-                    </div>
-                    <p className="form__urgency">Fitting slots available from June — book early to secure yours</p>
-                    <p className="form__reassurance">Free · No obligation · Takes 60 seconds</p>
                     {step < 5 && (
                         <div className="form__progress" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={4} aria-label={`Step ${step} of 4`}>
                             <p className="form__progress-label">Step {step} of 4</p>

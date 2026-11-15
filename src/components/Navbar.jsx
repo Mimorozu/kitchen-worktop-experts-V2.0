@@ -74,7 +74,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className={`navbar${isStatic ? ' navbar--static' : ''}${isScrolled ? ' navbar--scrolled' : ''}${pathname === '/quartz-worktops-birmingham' ? ' navbar--landing' : ''}`} ref={navRef}>
+    <nav className={`navbar${isStatic ? ' navbar--static' : ''}${isScrolled ? ' navbar--scrolled' : ''}`} ref={navRef}>
       <div className="navbar__nav-links">
         <Link className="navbar__link" to="/" onClick={snapToTop}>Home</Link>
         <Link className="navbar__link" to="/gallery" onClick={snapToTop}>Gallery</Link>

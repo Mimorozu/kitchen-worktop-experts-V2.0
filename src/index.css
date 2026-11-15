@@ -2420,7 +2420,7 @@ body[data-intro="hero"] .navbar__burger {
 }
 /* ── Paid-search landing page (/quartz-worktops-birmingham) ── */
 .lp-hero {
-  padding: 150px 24px 70px;
+  padding: 96px 24px 72px;
   background: var(--color-surface);
   text-align: center;
 }
@@ -2436,6 +2436,7 @@ body[data-intro="hero"] .navbar__burger {
   line-height: 1.15;
   color: var(--color-text);
   margin: 12px 0 16px;
+  text-wrap: balance;
 }
 
 .lp-hero__sub {
@@ -2451,8 +2452,23 @@ body[data-intro="hero"] .navbar__burger {
   padding: 16px 32px;
   font-size: 1rem;
   font-weight: 600;
+  white-space: nowrap;
   cursor: pointer;
   border-radius: 4px;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.lp-hero__cta:hover {
+  background: #74521f;
+}
+
+.lp-hero__cta:active {
+  transform: scale(0.98);
+}
+
+.lp-hero__cta:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 3px;
 }
 
 .lp-hero__phone {
@@ -2467,23 +2483,36 @@ body[data-intro="hero"] .navbar__burger {
 
 .lp-points {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 24px;
-  max-width: 1000px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 32px;
+  max-width: 1040px;
   margin: 0 auto;
-  padding: 60px 24px;
+  padding: 56px 24px;
+  text-align: center;
+}
+
+.lp-point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.lp-point:hover {
+  border-color: var(--color-primary-strong);
+  transform: translateY(-2px);
 }
 
 .lp-point__title {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.2rem;
+  line-height: 1.3;
   color: var(--color-text);
-  margin-bottom: 8px;
-}
-
-.lp-point__text {
-  color: var(--color-muted);
-  line-height: 1.5;
+  text-wrap: balance;
 }
 
 .lp-materials {
@@ -2504,20 +2533,20 @@ body[data-intro="hero"] .navbar__burger {
 
 .lp-materials__item {
   border: 1px solid var(--color-border);
+  border-radius: 4px;
   padding: 10px 22px;
   color: var(--color-text);
   background: var(--color-bg);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.lp-materials__item:hover {
+  border-color: var(--color-primary-strong);
+  color: var(--color-primary-strong);
 }
 
 .lp-materials__note {
   color: var(--color-muted);
-}
-
-/* Landing page: desktop shows only the logo, phone and quote button (no page links). */
-@media (min-width: 1024px) {
-  .navbar--landing .navbar__nav-links {
-    display: none;
-  }
 }
 
 /* ── Cartoon estimate invoice (shown on form success) ── */
@@ -2528,7 +2557,7 @@ body[data-intro="hero"] .navbar__burger {
   padding: 20px 22px;
   background: #fffdf7;
   border: 2px dashed var(--color-primary-strong);
-  border-radius: 6px;
+  border-radius: 4px;
   text-align: left;
   transform: rotate(-1.5deg);
   box-shadow: 4px 6px 0 var(--color-border);
@@ -2593,4 +2622,85 @@ body[data-intro="hero"] .navbar__burger {
   font-size: 0.8rem;
   color: var(--color-muted);
   line-height: 1.4;
+}
+
+/* Benefit icons on the landing page: small tile, sized in CSS */
+.lp-point__icon {
+  display: block;
+  width: 52px;
+  height: 52px;
+  padding: 13px;
+  box-sizing: border-box;
+  background: var(--color-surface);
+  border-radius: 4px;
+  color: var(--color-primary-strong);
+}
+
+@media (max-width: 639px) {
+  .lp-points {
+    gap: 16px;
+    padding: 40px 24px;
+  }
+}
+
+/* ── Shine that sweeps across primary CTAs ── */
+.lp-hero__cta,
+.hero__cta,
+.navbar__cta,
+.statement__cta,
+.guide__cta-button,
+.pricing__cta,
+.materials__quote-btn,
+.form__next:not(:disabled) {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.lp-hero__cta::before,
+.hero__cta::before,
+.navbar__cta::before,
+.statement__cta::before,
+.guide__cta-button::before,
+.pricing__cta::before,
+.materials__quote-btn::before,
+.form__next:not(:disabled)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -75%;
+  width: 50%;
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+  z-index: -1;
+  animation: ctaShine 4.2s ease-in-out infinite;
+}
+
+@keyframes ctaShine {
+  0%, 55% {
+    transform: translateX(0) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(520%) skewX(-18deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-hero__cta::before,
+  .hero__cta::before,
+  .navbar__cta::before,
+  .statement__cta::before,
+  .guide__cta-button::before,
+  .pricing__cta::before,
+  .materials__quote-btn::before,
+  .form__next:not(:disabled)::before {
+    animation: none;
+    display: none;
+  }
 }
