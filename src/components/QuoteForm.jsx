@@ -1,6 +1,6 @@
 // src/components/QuoteForm.jsx
 import { useState } from 'react'
-import ReactGA from 'react-ga4'
+import { trackEvent } from '../lib/consent'
 
 const MATERIALS = [
     { id: 'quartz', label: 'Quartz' },
@@ -37,7 +37,7 @@ export default function QuoteForm() {
     })
 
     function trackStep(stepNumber, stepName) {
-        ReactGA.event({
+        trackEvent({
             category: 'Lead',
             action: 'form_step',
             label: stepName,
@@ -47,7 +47,7 @@ export default function QuoteForm() {
 
     function handleAnswer(field, value) {
         if (field === 'material' && !answers.material) {
-            ReactGA.event({ category: 'Lead', action: 'form_started' })
+            trackEvent({ category: 'Lead', action: 'form_started' })
         }
         setAnswers(prev => ({ ...prev, [field]: value }))
     }
@@ -92,7 +92,7 @@ export default function QuoteForm() {
                 throw new Error(`Lead submission failed with status ${response.status}`)
             }
 
-            ReactGA.event({
+            trackEvent({
                 category: 'Lead',
                 action: 'form_submitted',
                 label: answers.material,

@@ -48,7 +48,7 @@ export default function RecentWorks() {
     )
 }
 
-function BeforeAfterSlider({ before, after, alt }) {
+export function BeforeAfterSlider({ before, after, alt }) {
     const [position, setPosition] = useState(50)
     const containerRef = useRef(null)
     const draggingRef = useRef(false)

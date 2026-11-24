@@ -7,7 +7,10 @@ import MaterialsPage from './pages/MaterialsPage'
 import GuidesPage from './pages/GuidesPage'
 import GuidePage from './pages/GuidePage'
 import QuartzBirminghamPage from './pages/QuartzBirminghamPage'
+import LegalPage from './pages/LegalPage'
+import { LEGAL_DOCS } from './data/legal'
 import StickyQuoteCTA from './components/StickyQuoteCTA'
+import CookieBanner from './components/CookieBanner'
 
 export default function App() {
     return (
@@ -20,9 +23,13 @@ export default function App() {
                 <Route path="/guides" element={<GuidesPage />} />
                 <Route path="/guides/:slug" element={<GuidePage />} />
                 <Route path="/quartz-worktops-birmingham" element={<QuartzBirminghamPage />} />
+                <Route path="/privacy" element={<LegalPage doc={LEGAL_DOCS.privacy} />} />
+                <Route path="/terms" element={<LegalPage doc={LEGAL_DOCS.terms} />} />
+                <Route path="/cookies" element={<LegalPage doc={LEGAL_DOCS.cookies} />} />
             </Routes>
             <Footer />
             <StickyQuoteCTA />
+            <CookieBanner />
         </BrowserRouter>
     )
 }

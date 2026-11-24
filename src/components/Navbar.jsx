@@ -73,6 +73,9 @@ export default function Navbar() {
     window.scrollTo(0, 0)
   }
 
+  // Landing page for paid traffic has no navigation, so visitors stay on the offer.
+  if (pathname === '/quartz-worktops-birmingham') return null
+
   return (
     <nav className={`navbar${isStatic ? ' navbar--static' : ''}${isScrolled ? ' navbar--scrolled' : ''}`} ref={navRef}>
       <div className="navbar__nav-links">

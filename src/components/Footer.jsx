@@ -8,6 +8,12 @@ const QUICK_LINKS = [
   { label: 'Guides', path: '/guides' },
 ]
 
+const LEGAL_LINKS = [
+  { label: 'Privacy Policy', path: '/privacy' },
+  { label: 'Terms of Use', path: '/terms' },
+  { label: 'Cookie Notice', path: '/cookies' },
+]
+
 const AREAS = [
   'Birmingham', 'Wolverhampton', 'Coventry',
   'Dudley', 'Walsall', 'Solihull',
@@ -91,6 +97,13 @@ export default function Footer() {
       </div>
 
       <div className="footer__bottom">
+        <nav className="footer__legal" aria-label="Legal">
+          {LEGAL_LINKS.map(({ label, path }) => (
+            <button key={path} className="footer__legal-link" onClick={() => { navigate(path); window.scrollTo(0, 0) }}>
+              {label}
+            </button>
+          ))}
+        </nav>
         <p>© {new Date().getFullYear()} Kitchen Worktop Experts. All rights reserved.</p>
         <p>Website by <span className="footer__credit">KWE Digital</span></p>
       </div>
